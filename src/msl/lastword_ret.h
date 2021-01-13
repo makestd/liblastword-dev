@@ -37,3 +37,6 @@
 
 //! An empty array/string was inputed
 #define MSL_LASTWORD_EEMPTY -3
+
+//! A blank string was inputed
+#define MSL_LASTWORD_EBLANK -4
