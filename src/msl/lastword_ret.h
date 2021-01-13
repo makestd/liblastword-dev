@@ -34,3 +34,6 @@
 
 //! A null pointer was found
 #define MSL_LASTWORD_ENULL -2
+
+//! An empty array/string was inputed
+#define MSL_LASTWORD_EEMPTY -3
