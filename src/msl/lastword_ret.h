@@ -31,3 +31,6 @@
 
 //! An error occurred
 #define MSL_LASTWORD_ERROR -1
+
+//! A null pointer was found
+#define MSL_LASTWORD_ENULL -2
