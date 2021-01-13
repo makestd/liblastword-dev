@@ -25,3 +25,16 @@
  * @date   12 Jan 2021
  * @brief  Specification of the msl_lastword* functions.
  */
+
+#include <stddef.h> // size_t
+
+/*!
+ * @brief Finds the last word of a string.
+ *
+ * @param[in]  str  The string.
+ * @param[in]  n    The length the string.
+ * @param[out] word The last word.
+ * @param[out] size The last word's length.
+ * @return The exit status.
+ */
+int msl_lastword_str(char *str, size_t n, char **word, size_t *size);
