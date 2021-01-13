@@ -1,0 +1,11 @@
+# GNU Autotools files
+autom4te.cache
+build-aux
+docs
+aclocal.m4
+config.status
+config.log
+configure
+Doxyfile
+Makefile
+Makefile.in
