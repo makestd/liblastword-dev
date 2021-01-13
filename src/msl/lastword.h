@@ -38,3 +38,14 @@
  * @return The exit status.
  */
 int msl_lastword_str(char *str, size_t n, char **word, size_t *size);
+
+/*!
+ * @brief Finds the last word of an array of strings.
+ *
+ * @param[in]  argv The array of strings.
+ * @param[in]  argc The length the array.
+ * @param[out] word The last word.
+ * @param[out] size The last word's length.
+ * @return The exit status.
+ */
+int msl_lastword_arr(char **argv, size_t argc, char **word, size_t *size);
