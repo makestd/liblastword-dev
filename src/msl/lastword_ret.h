@@ -25,3 +25,6 @@
  * @date   12 Jan 2021
  * @brief  Specification of the msl_lastword* exit status values.
  */
+
+//! No errors found
+#define MSL_LASTWORD_SUCCESS 0
