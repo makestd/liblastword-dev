@@ -28,3 +28,6 @@
 
 //! No errors found
 #define MSL_LASTWORD_SUCCESS 0
+
+//! An error occurred
+#define MSL_LASTWORD_ERROR -1
