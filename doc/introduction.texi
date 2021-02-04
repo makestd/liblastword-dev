@@ -1,0 +1,38 @@
+@comment %**The "Introduction" chapter
+
+@node Introduction
+@chapter Introduction
+
+This manual attempts to explain the functionality offered by the
+@emph{lastword} library from the @emph{Makefile Standard Library}
+project.  Due to the nature of this project, implementation details
+will be omitted whenever possible, because an implementation is not
+offered by this project but by a sibling project under the same parent
+project, which conforms strictly to this specification and follows
+the suggested guidelines.
+
+Given that this library is a small software component of a much bigger
+project, an explanation of the ecosystem and the problem it tries
+to solve is included.  The explanations of the problem and its solution
+are also available in the manual of every single software component of
+the parent project, and a complete manual is also available for the
+project as a whole.
+
+Last but not least, the licensing of this project was initially thought
+to be a copyleft license (such as GPL or LGPL), but later was changed
+to a permissive license (the MIT license).  The freedoms the GPL license
+and its derivatives guarantee are good for the end user, but this
+project is not very likely to benefit from them, because most of the
+rights take effect when the software is distributed (or conveyed,
+as the GPL license states) and a build system is usually not distributed
+with the project that uses it, but only its configuration files.  A
+build system that could benefit from licensing would be Gradle, which
+ships a wrapper that is recommended to be commited and is JVM-based
+(so write once run everywhere), but even in that case, only the wrapper
+would be protected and the license stops being useful once the compiled
+files are distributed, because they do not use nor are linked to
+the build system that was used to produce the artifacts.  I hope
+a permissive licensing helps this project being widely used, that
+we all can benefit from the improvements made by the community and
+that one day this project becomes deprecated because it has been
+superseded by the @emph{make} specification/standard.

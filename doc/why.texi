@@ -1,0 +1,104 @@
+@comment %**The "Why?" chapter
+
+@node Why?
+@chapter Why?
+
+All projects have a reason to exist and this one is not an exception.
+Even though I enjoy programming and I like challenges, this project
+exists because it tries to solve an actual problem of a specific build
+system.
+
+
+@comment %**start of the "Why?" menu
+@menu
+* The Problem::
+  An explanation of the general problem in the build systems landscape.
+* The Solution::
+  What is the proposed solution for a specific build system.
+@end menu
+@comment %**end of the "Why?" menu
+
+
+@node The Problem
+@section The Problem
+
+In the vast ocean of build tools/systems, there are many different
+categories software can be grouped in.  The decision can be made based
+on what their dependencies are (such as programming language), how
+it is configured (XML, JSON, etc.), the speedup it offers, how it handles
+your project's dependencies, its philosophy and many more.  The truth
+is: there is no perfect build system; every property of a build system
+can be seen as an advantage or as a setback.  There is trick though.
+When a build system does not exactly meet your needs, you are indirectly
+forced to (a) deal with it or (b) fix, patch or hack it.
+
+On one hand, the more powerful and complex a build system is, the
+harder it is to modify its core.  If the modification can only be
+done at source level, you are left with the problem of distributing
+the modified version of a build system just to build your project
+and keeping up with the updates which might break your modifications
+(or if you are lucky render them unnecessary).
+
+On the other hand, if the program is simple, extending it can be
+done easily and it is less likely to suffer from breaking changes,
+but the flexibility and configuration it offers is worse, more verbose
+or even inexistent.
+
+Obviously, using an scripting language as build system is not considered
+an option here, because even if it suits you perfectly, the main reason
+for using a build system is that you only need to learn it once, so
+that you can and know how to compile any project that uses the same
+build system.
+
+The @emph{make} program is an example of a build tool which has many
+attractive properties: it is an OpenGroup standard (ergo it is
+POSIX-compatible), it does not have many dependencies (can be compiled
+from source easily), it is flexible enough to be configured by people
+who do not maintain the project itself and is language-agnostic.
+
+However, it is very rudimentary, in the sense that you have to write
+the commands required to execute task manually.  To simplify it, there
+are many features that help reducing the verbosity of a Makefile and
+improving its readability, such as automatic variables and some built-in
+functions.  Unfortunately, some of these functions are part of a specific
+implementation (such as @emph{GNU Make}), which means the moment you
+rely on them to build your project it stops being POSIX-compatible
+and becomes GNU-dependant.
+
+On top of that, patching @emph{make} to offer missing functionality
+(such as an older version) using the built-in functions @code{shell},
+@code{call} and @code{eval} degrades the performance drastically,
+especially when using the former, because it implies spawning a shell
+interpreter process (which is not necessarily fast), executing the
+given program and collecting its output.  That is in the best-case
+scenario, because in the worst-case scenario the shell program contains
+pipes (which means spawning more processes) and the definition of
+a shell-based function could be based on another one, meaning a single
+call to a patched built-in function could spawn tens of processes.
+When that happens, the execution time of @code{make} until it has
+constructed the dependency graph and can start executing commands
+is unbearably long.
+
+
+@node The Solution
+@section The Solution
+
+The one and only true solution would be to update the standard specification
+of @emph{make} to include some of the advanced functions offered by
+GNU Make, so that writing Makefiles is more enjoyable, easier to maintain
+and technically correct and POSIX-compatible.  But specifications
+require time, reaching an agreement and the software vendors following
+it, because a specification that nobody follows is as useful as not
+having one, so this solution is obviously discarded.
+
+The other solution is to implement the built-in functions as libraries
+so that the functionality can be linked to existing implementations
+(either natively or using an extension language, such as @emph{GNU
+Guile}) and create single-purpose programs that use the libraries to
+offer the same functionality from a shell interpreter, so that the
+performance overhead when implementing them using the @code{shell}
+function is as low as possible.
+
+That is what the @emph{Makefile Standard Library} is.  The specification
+(and an implementation) of the built-in functions of @emph{make},
+using the C programming language as common denominator.

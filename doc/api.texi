@@ -1,0 +1,140 @@
+@comment %**The "API" chapter
+
+@node API
+@chapter API
+
+The symbols exported by the library con be grouped based how they
+are defined.  In this library there are only two groups: functions
+and preprocessor macros.
+
+
+@comment %**start of the "API" menu
+@menu
+* Functions::
+  MSL functions.
+* Macros::
+  MSL macros.
+@end menu
+@comment %**end of the "API" menu
+
+
+@node Functions
+@section Functions
+
+Presuming that your set of programs, or package, has been adjusted
+so all the required MSL lastword files are available, and your Makefile
+files are adjusted, each C module using the library should contain
+the lines followiing lines to import all the functions and macros:
+
+@example
+#include <msl/lastword.h>       // function definitions
+#include <msl/lastword/error.h> // error codes
+@end example
+
+@syindex msl_lastword_str(size_t, char *, size_t *, char **)
+
+@noindent
+Obtaining the last word of a string is the basic functionality offered
+by this library.  The declaration for @code{msl_lastword_str} in ANSI
+C is:
+
+@example
+int msl_lastword_str(size_t len, char *str, size_t *size, char **word);
+@end example
+
+@noindent
+The parameters are more or less self explanatory, but bear in mind
+that only the first 2 are the input parameters; the rest are the output
+parameters where the results will be stored.  The convention used
+for the return code is the typical found in many libraries or syscalls:
+if it's @code{0} no errors occurred, otherwise it is a negative number.
+Given this convention, the recommended approach for implementations
+is to use the specified return codes (if supported) or return a
+collision-free negative number ("-1") when an error occurs; it is
+guaranteed that no return code is -1 but a lower value, this way no
+collision occurs between error-aware implementations and generic
+non-error-aware implementations.
+
+So, one might use the following snippet to find the last word of a
+string containing @emph{Hello World!}.
+
+@example
+char *input = "Hello World!";
+size_t size;
+char *last;
+int result = msl_lastword_str(strlen(input), input, &size, &last);
+@end example
+
+@noindent
+The size of the last word will be stored in @code{size} ("6" in this
+case) and the address of the last word's first character in @code{word}
+("World!" in this case).  Given that this call does not contain incorrect
+parameters, the @code{result} will be exactly zero ("0") and the output
+can be safely accessed using the output parameters.  Be aware that
+this function only @emph{finds} the last word and does not @emph{extract}
+or @emph{copy} its bytes, so the address is only valid as long as
+the input string is valid and has not been freed.
+
+@syindex msl_lastword_arr(size_t, char **, size_t *, char **)
+
+The same logic can be applied to the @code{msl_lastword_arr} function,
+whose ANSI C declaration is:
+
+@example
+msl_lastword_arr(size_t arrc, char **arrv, size_t *size, char **word);
+@end example
+
+@noindent
+The main difference is that the input parameters do not specify the
+length of a string and its contents but the number of strings to process
+and an array of strings.
+
+
+@node Macros
+@section Macros
+
+The macros exposed by the library aim to simplify calling the functions
+explained previously and offer a standard set of error codes based
+on what things could go wrong when calling them, which is mostly
+incorrectly formatted parameters.
+
+@mcindex msl_lastword_str(char *, size_t *, char **)
+
+The most obvious case of calling simplification with macros is not
+having to call @code{strlen} everytime, which means you can use
+@code{msl_lastword_str(str, size, word)} and it will be automatically
+expanded to the same function call but with the fourth parameter (in
+the first position).  It is important to note that, because macros
+are expanded at compile time and leave no runtime traces, the
+@code{string.h} header is not included by default (to avoid useless
+inclusions), which means you should include it in your source files
+if you use this macro (or, alternatively, provide an implementation
+for @code{strlen}).
+
+@mcindex msl_lastword(size_t, char *[*], size_t *, char **)
+
+Another macro named @code{msl_lastword(count, text, size, word)} exists
+for compilers with C11 support, which uses the @code{_Generic} macro
+to determine which @code{msl_lastword_*} function to call based on
+the data type of the second parameter.
+
+@mcindex msl_lastword(char *[*], size_t *, char **)
+
+Of course, an extra macro is exported to omit the first parameter
+(with the same guarantees as the macro from the previous paragraph),
+named @code{msl_lastword(text, size, word)}.
+
+The error codes are also exported as literal numbers easily accessible
+through a set of macros prefixed with the library name:
+
+@itemize @bullet
+@mcindex MSL_LASTWORD_ENULL
+@item @code{MSL_LASTWORD_ENULL} ("-2"):
+an error occurred because a null pointer was passed.
+@mcindex MSL_LASTWORD_EEMPTY
+@item @code{MSL_LASTWORD_EEMPTY} ("-3"):
+an error occurred because an empty pointer was passed.
+@mcindex MSL_LASTWORD_EBLANK
+@item @code{MSL_LASTWORD_EBLANK} ("-4"):
+an error occurred because a blank array was passed.
+@end itemize

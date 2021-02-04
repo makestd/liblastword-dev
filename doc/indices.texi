@@ -1,0 +1,31 @@
+@comment %**The "Indices" chapter
+
+@node Indices
+@unnumbered Indices
+
+
+@comment %**start of the "Indices" menu
+@menu
+* Symbol Index::
+  The index of the exported C symbols.
+* Macro Index::
+  The index of the exported C preprocessor macros.
+* Program Index::
+  The index of command-line programs.
+@end menu
+@comment %**end of the "Indices" menu
+
+
+@node Symbol Index
+@section Symbol Index
+@printindex sy
+
+
+@node Macro Index
+@section Macro Index
+@printindex mc
+
+
+@node Program Index
+@section Program Index
+@printindex ci

@@ -1,0 +1,26 @@
+@comment %**The "Invocation" chapter
+
+@node Invocation
+@chapter Invocation
+
+@ciindex msl-lastword
+
+As explained in @ref{The Solution}, a single-purpose program
+is a fallback solution when a @emph{make} implementation cannot be
+patched to use the library directly.  A hypothetical single-purpose
+program would be ideally named @code{msl-lastword} and behave exactly
+as Make's @code{lastword} built-in function, which means it should
+not recognize the common options used by GNU, such as @code{--help},
+@code{--version} and @code{--}.  To not fully omit the information
+provided by those common options, it should be available somewhere
+else, such as a manual, its documentation or a manpage.
+
+@noindent
+This means that the execution of
+
+@example
+msl-lastword --help Hello --version World -- !
+@end example
+
+@noindent
+should output exactly an exclamation mark ("!").

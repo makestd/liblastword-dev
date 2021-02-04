@@ -1,0 +1,105 @@
+\input texinfo
+
+
+@comment %**start of header
+@setfilename libmsl-lastword-dev.info
+@include version.texi
+@settitle MSL Lastword Library @value{VERSION}
+@syncodeindex pg cp
+@documentencoding UTF-8
+@allowcodebreaks false
+@afourpaper
+@comment %**end of header
+
+
+@comment %**start of summary description and copyright
+@copying
+This manual documents version @value{VERSION} of the MSL lastword
+library.
+@vskip 5pt
+@include mit.texi
+@end copying
+@comment %**end of summary description and copyright
+
+
+@comment %**start of directory
+@dircategory Software development
+@direntry
+* libmsl-lastword-dev: (libmsl-lastword-dev)Make's @emph{lastword} development manual.
+@end direntry
+@comment %**end of directory
+
+
+@comment %**start of new indices
+@defindex sy
+@defindex mc
+@defindex ci
+@comment %**end of new indices
+
+
+@comment %**start of title page
+@titlepage
+@title MSL Lastword
+@subtitle Lastword MSL Library
+@subtitle for version @value{VERSION}, @value{UPDATED}
+@author Esaú García Sánchez-Torija (@email{egasato.dev@@gmail.com})
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+@comment %**end of title page
+
+
+@comment %**start of the top node
+@ifnottex
+@node Top
+@top General Content
+This document is a manual explaining the usage of the library from
+the programmer's and user's point of view, available as an ANSI C
+API and a single-purpose program.
+@end ifnottex
+@comment %**end of the top node
+
+
+@comment %**start of the table of contents
+@shortcontents
+@contents
+@comment %**end of the table of contents
+
+
+@comment %**start of the master menu
+@menu
+* Introduction::
+  Common introduction for all the MSL libraries.
+* Why?::
+  Why does MSL exist and what problem does it try to solve.
+* API::
+  An explanation of the exported symbols and how to use them.
+* Invocation::
+  The user interface of an hypothetical program.
+* License::
+  Copying and sharing of this Software.
+* Indices::
+  All the indices used in this manual.
+@end menu
+@comment %**end of the master menu
+
+
+@include introduction.texi
+@include why.texi
+@include api.texi
+@include invocation.texi
+
+
+@comment %**start of the license
+@node License
+@appendix MIT License
+@include mit.texi
+@comment %**end of the license
+
+
+@include indices.texi
+
+
+@comment %**end of the document
+@bye
