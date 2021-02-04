@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Runs Autoreconf forcecully with extra verbosity
+autoreconf --verbose --install --force

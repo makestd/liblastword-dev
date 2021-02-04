@@ -1,0 +1,2 @@
+The API is auto-generated when releasing.
+If you are seeing this, use 'pandoc -f markdown API.md -t plain -o API' for a plain text API file.

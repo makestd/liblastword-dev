@@ -1,0 +1,2 @@
+The README is auto-generated when releasing.
+If you are seeing this, use 'pandoc -f markdown README.md -t plain -o README' for a plain text README file.
