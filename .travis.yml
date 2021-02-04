@@ -1,0 +1,156 @@
+# Configure the environment for the C language
+language: c
+
+# Test all the available operating systems
+os:
+  - windows
+  - osx
+# - linux
+
+# Test all the Linux distributions available with both compilers
+jobs:
+  include:
+    - os: linux
+      dist: focal
+      compiler: clang
+    - os: linux
+      dist: focal
+      compiler: gcc
+    - os: linux
+      dist: bionic
+      compiler: clang
+    - os: linux
+      dist: bionic
+      compiler: gcc
+    - os: linux
+      dist: xenial
+      compiler: clang
+    - os: linux
+      dist: xenial
+      compiler: gcc
+    - os: linux
+      dist: trusty
+      compiler: clang
+    - os: linux
+      dist: trusty
+      compiler: gcc
+    - os: linux
+      dist: precise
+      compiler: clang
+    - os: linux
+      dist: precise
+      compiler: gcc
+
+# Test all the compilers available
+compiler:
+  - clang
+  - gcc
+
+# Root access is required
+sudo: true
+
+# Add MSYS2 suport
+before_install:
+  - |-
+    case $TRAVIS_OS_NAME in
+      windows)
+        [[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
+        choco uninstall -y mingw
+        choco upgrade --no-progress -y msys2
+        export msys2='cmd //C RefreshEnv.cmd '
+        export msys2+='& set MSYS=winsymlinks:nativestrict '
+        export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+        export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
+        export msys2+=" -msys2 -c "\"\$@"\" --"
+        $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
+        ## Install more MSYS2 packages from https://packages.msys2.org/base here
+        taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
+        export PATH=/C/tools/msys64/mingw64/bin:$PATH
+        export MAKE=mingw32-make  # so that Autotools can find it
+        ;;
+      *)
+        export MAKE=make
+        ;;
+    esac
+
+# Install all the development dependencies
+addons:
+  apt:
+    update: true
+    packages:
+      - make
+      - autoconf
+      - automake
+      - git
+      - texinfo
+      - texlive
+      - pandoc
+      - doxygen
+      - gzip
+      - bzip2
+      - lzip
+      - xz-utils
+      - zip
+  homebrew:
+    update: true
+    packages:
+      - make
+      - autoconf
+      - automake
+      - git
+      - texinfo
+      - texlive
+      - pandoc
+      - doxygen
+      - gzip
+      - bzip2
+      - lzip
+      - xz
+      - zip
+
+# Install all the development dependencies
+install:
+  - |-
+    case $TRAVIS_OS_NAME in
+      windows)
+        $msys2 pacman --sync --noconfirm --needed make autoconf \
+          automake git texinfo
+        choco install -y texlive pandc
+        $msys2 pacman --sync --noconfirm --needed doxygen gzip \
+          lzip xz zip
+        ;;
+    esac
+
+# Print the version messages
+before_script:
+  - $MAKE --version
+  - autoreconf --version
+  - autoconf --version
+  - automake --version
+
+# Builds and installs everythiing
+script:
+  - sh bootstrap
+  - ./configure
+  - $MAKE info html pdf ps
+  - sudo $MAKE install
+
+# Creates the distribution archives
+before_deploy:
+  - $MAKE dist
+
+# Clean MSYS2 packages before caching
+before_cache:
+- |-
+    case $TRAVIS_OS_NAME in
+      windows)
+        # https://unix.stackexchange.com/a/137322/107554
+        $msys2 pacman --sync --clean --noconfirm
+        ;;
+    esac
+
+# Cache MSYS2 package and installation
+cache:
+    directories:
+    - $HOME/AppData/Local/Temp/chocolatey
+    - /C/tools/msys64
